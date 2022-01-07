@@ -67,8 +67,6 @@ class notify:
                 )
 
         # slack api token
-        if token is None:
-            token = os.environ['SLACK_API_TOKEN']
         self.token = token
 
         self.error = None
@@ -84,6 +82,9 @@ class notify:
 
         @functools.wraps(f)
         def wrapper(*args, **kwargs) -> T:
+            if self.token is None:
+                self.token = os.environ['SLACK_API_TOKEN']
+
             self.t_start = time.time()
 
             try:
